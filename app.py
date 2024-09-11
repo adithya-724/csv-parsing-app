@@ -2,7 +2,7 @@ import pathlib
 import textwrap
 import os
 import google.generativeai as genai
-from pdf2image import convert_from_path
+from pdf2image import convert_from_bytes
 from PIL import Image
 import io
 import os
@@ -17,8 +17,8 @@ def to_markdown(text):
   text = text.replace('•', '  *')
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-def pdf_to_images(pdf_path):
-    images = convert_from_path(pdf_path)
+def pdf_to_images(bytes_data):
+    images = convert_from_bytes(bytes_data)
     return images
 
 
@@ -73,8 +73,10 @@ def create_csv(supp_name,img_list):
 
 if st.session_state['api_key'] != '':
     uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-    st.write(type(uploaded_file))
-    # img_list = pdf_to_images('/content/data/bharath_auto_2.pdf')
+    bytes_data = uploaded_file.getvalue()
+    img_list = pdf_to_images(bytes_data)
+    for img in img_list:
+        st.write(img)
     # df = create_csv('bharath_auto1',img_list)
     # df.to_csv('/content/bharath_auto1.csv',index=False)
 else:
