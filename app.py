@@ -52,8 +52,6 @@ def create_csv(supp_name,cols,img_list):
         Each column should be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
         ''',im1])
-
-        st.write('here')
         result_json = to_markdown(response.text)
         result_str = result_json.data
         print('fetched result')
@@ -87,7 +85,7 @@ if st.session_state['api_key'] != '':
         img_list = pdf_to_images(bytes_data)
         st.subheader('Verify Images')
         final_img_list = []
-        newsize = (500, 500)
+        newsize = (1000, 1000)
         for img in img_list:
             im1 = img.resize(newsize)
             st.write(im1)
@@ -97,17 +95,18 @@ if st.session_state['api_key'] != '':
         supplier_name = st.text_input('Enter supplier name')
         try:
             if supplier_name != '' and cols != '':
-                df = create_csv(supplier_name,final_cols,final_img_list)
-                        
-                csv = convert_df(df)
+                with st.spinner:
+                    df = create_csv(supplier_name,final_cols,final_img_list)
+                            
+                    csv = convert_df(df)
 
-                st.download_button(
-                "Press to Download",
-                csv,
-                f"{supplier_name}.csv",
-                "text/csv",
-                key='download-csv'
-                )
+                    st.download_button(
+                    "Press to Download",
+                    csv,
+                    f"{supplier_name}.csv",
+                    "text/csv",
+                    key='download-csv'
+                    )
             else:
                 st.error('Enter column headers and supp name to proceed')
 
