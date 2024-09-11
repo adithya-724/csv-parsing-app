@@ -73,6 +73,7 @@ def create_csv(supp_name,img_list):
 
 if st.session_state['api_key'] != '':
     uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+    st.write(type(uploaded_file))
     # img_list = pdf_to_images('/content/data/bharath_auto_2.pdf')
     # df = create_csv('bharath_auto1',img_list)
     # df.to_csv('/content/bharath_auto1.csv',index=False)
