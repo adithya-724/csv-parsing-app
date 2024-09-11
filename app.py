@@ -94,21 +94,24 @@ if st.session_state['api_key'] != '':
         final_cols = '[ ' + cols + ' ]'
         supplier_name = st.text_input('Enter supplier name')
         try:
-            if supplier_name != '' and cols != '':
-                with st.spinner('Processing'):
-                    df = create_csv(supplier_name,final_cols,final_img_list)
-                            
-                    csv = convert_df(df)
+            btn = st.button('process')
+            if btn:
+                if supplier_name != '' and cols != '':
+                
+                    with st.spinner('Processing'):
+                        df = create_csv(supplier_name,final_cols,final_img_list)
+                                
+                        csv = convert_df(df)
 
-                    st.download_button(
-                    "Download",
-                    csv,
-                    f"{supplier_name}.csv",
-                    "text/csv",
-                    key='download-csv'
-                    )
-            else:
-                st.error('Enter column headers and supp name to proceed')
+                        st.download_button(
+                        "Download",
+                        csv,
+                        f"{supplier_name}.csv",
+                        "text/csv",
+                        key='download-csv'
+                        )
+                else:
+                    st.error('Enter column headers and supp name to proceed')
 
         except Exception as e:
             st.error(e)
