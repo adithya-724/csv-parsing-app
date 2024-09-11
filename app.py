@@ -43,11 +43,20 @@ def create_csv(supp_name,cols,img_list):
     df_ls = []
     for img in img_list:
         model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content([f'''
-        You will be given an image which conatains tabular data.
+
+        response = model.generate_content('''You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictioanary format.
         The result should strictly only have the fully formatted dictionary.
-        Each column sshould be a unique key and the column values should be the values of the key.
+        Each column sshould be a unique key and the column values should be the values of the key''')
+
+        result_json = to_markdown(response.text)
+        st.write(result_json)
+
+        response = model.generate_content([f'''
+        You will be given an image which conatains tabular data.
+        Extract this information and format it in a python dictionary format.
+        The result should strictly only have the fully formatted dictionary.
+        Each column should be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
         ''',img])
 
@@ -91,7 +100,7 @@ if st.session_state['api_key'] != '':
         supplier_name = st.text_input('Enter supplier name')
         try:
             if supplier_name != '' and cols != '':
-                df = create_csv(supplier_name,cols,img_list)
+                df = create_csv(supplier_name,final_cols,img_list)
                         
                 csv = convert_df(df)
 
