@@ -33,17 +33,22 @@ genai.configure(api_key=st.session_state['api_key'])
 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-def create_csv(supp_name,img_list):
+@st.cache_data
+def convert_df(df):
+   return df.to_csv(index=False).encode('utf-8')
+
+
+
+def create_csv(supp_name,cols,img_list):
     df_ls = []
     for img in img_list:
-        response = model.generate_content(['''
+        response = model.generate_content([f'''
 
         You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictioanary format.
         The result should strictly only have the fully formatted dictionary.
         Each column sshould be a unique key and the column values should be the values of the key.
-        Also only look for these columns : ['S.N.', 'Part No', 'Description of Goods', 'BRAND', 'VEHICLE', 'Qty.',
-       'Price', 'Disc.', 'Rate', 'Amount (₹)']
+        Also only look for these columns : {cols} 
         ''',img])
         result_json = to_markdown(response.text)
         result_str = result_json.data
@@ -73,11 +78,31 @@ def create_csv(supp_name,img_list):
 
 if st.session_state['api_key'] != '':
     uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-    bytes_data = uploaded_file.getvalue()
-    img_list = pdf_to_images(bytes_data)
-    for img in img_list:
-        st.write(img)
-    # df = create_csv('bharath_auto1',img_list)
+    if uploaded_file is not None:
+        bytes_data = uploaded_file.getvalue()
+        img_list = pdf_to_images(bytes_data)
+        st.subheader('Verify Images')
+        for img in img_list:
+            st.write(img)
+        cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
+        cols = '[ ' + cols + ' ]'
+        supplier_name = st.text_input('Enter supplier name')
+        try:
+            df = create_csv(supplier_name,cols,img_list)
+                      
+            csv = convert_df(df)
+
+            st.download_button(
+            "Press to Download",
+            csv,
+            f"{supplier_name}.csv",
+            "text/csv",
+            key='download-csv'
+            )
+
+        except Exception as e:
+            st.error(e)
+      
     # df.to_csv('/content/bharath_auto1.csv',index=False)
 else:
     st.error('Please enter api key')
