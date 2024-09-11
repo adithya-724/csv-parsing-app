@@ -44,14 +44,15 @@ def create_csv(supp_name,cols,img_list):
     for img in img_list:
         model = genai.GenerativeModel('gemini-1.5-flash')
 
-
+        newsize = (500, 500)
+        im1 = img.resize(newsize)
         response = model.generate_content([f'''
         You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictionary format.
         The result should strictly only have the fully formatted dictionary.
         Each column should be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
-        ''',img])
+        ''',im1])
 
         st.write('here')
         result_json = to_markdown(response.text)
