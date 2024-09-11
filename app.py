@@ -31,7 +31,7 @@ st.session_state['api_key'] = st.text_input('Enter your gemini api key')
 genai.configure(api_key=st.session_state['api_key'])
 
 
-model = genai.GenerativeModel('gemini-1.5-flash')
+
 
 @st.cache_data
 def convert_df(df):
@@ -42,14 +42,16 @@ def convert_df(df):
 def create_csv(supp_name,cols,img_list):
     df_ls = []
     for img in img_list:
+        model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content([f'''
-
         You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictioanary format.
         The result should strictly only have the fully formatted dictionary.
         Each column sshould be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
         ''',img])
+
+        st.write('here')
         result_json = to_markdown(response.text)
         result_str = result_json.data
         print('fetched result')
