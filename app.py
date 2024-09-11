@@ -85,20 +85,23 @@ if st.session_state['api_key'] != '':
         for img in img_list:
             st.write(img)
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
-        cols = '[ ' + cols + ' ]'
+        final_cols = '[ ' + cols + ' ]'
         supplier_name = st.text_input('Enter supplier name')
         try:
-            df = create_csv(supplier_name,cols,img_list)
-                      
-            csv = convert_df(df)
+            if supplier_name != '' and cols != '':
+                df = create_csv(supplier_name,cols,img_list)
+                        
+                csv = convert_df(df)
 
-            st.download_button(
-            "Press to Download",
-            csv,
-            f"{supplier_name}.csv",
-            "text/csv",
-            key='download-csv'
-            )
+                st.download_button(
+                "Press to Download",
+                csv,
+                f"{supplier_name}.csv",
+                "text/csv",
+                key='download-csv'
+                )
+            else:
+                st.error('Enter column headers and supp name to proceed')
 
         except Exception as e:
             st.error(e)
