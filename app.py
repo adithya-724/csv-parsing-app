@@ -91,7 +91,6 @@ if st.session_state['api_key'] != '':
             st.write(im1)
             final_img_list.append(im1)
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
-        final_cols = '[ ' + cols + ' ]'
         supplier_name = st.text_input('Enter supplier name')
         try:
             btn = st.button('process')
@@ -99,7 +98,7 @@ if st.session_state['api_key'] != '':
                 if supplier_name != '' and cols != '':
                 
                     with st.spinner('Processing'):
-                        df = create_csv(supplier_name,final_cols,final_img_list)
+                        df = create_csv(supplier_name,cols,final_img_list)
                                 
                         csv = convert_df(df)
 
