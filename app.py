@@ -50,7 +50,8 @@ def create_csv(supp_name,cols,img_list):
         Each column sshould be a unique key and the column values should be the values of the key''')
 
         result_json = to_markdown(response.text)
-        st.write(result_json)
+        result_str = result_json.data
+        st.write(result_str)
 
         response = model.generate_content([f'''
         You will be given an image which conatains tabular data.
