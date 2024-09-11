@@ -43,9 +43,6 @@ def create_csv(supp_name,cols,img_list):
     df_ls = []
     for img in img_list:
         model = genai.GenerativeModel('gemini-1.5-flash')
-        img_bytes = io.BytesIO()
-        img.save(img_bytes, format='JPEG')  # You can choose other formats like 'PNG' if needed
-        img_bytes.seek(0)
 
 
         response = model.generate_content([f'''
@@ -54,7 +51,7 @@ def create_csv(supp_name,cols,img_list):
         The result should strictly only have the fully formatted dictionary.
         Each column should be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
-        ''',img_bytes])
+        ''',img])
 
         st.write('here')
         result_json = to_markdown(response.text)
