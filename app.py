@@ -95,13 +95,13 @@ if st.session_state['api_key'] != '':
         supplier_name = st.text_input('Enter supplier name')
         try:
             if supplier_name != '' and cols != '':
-                with st.spinner:
+                with st.spinner('Processing'):
                     df = create_csv(supplier_name,final_cols,final_img_list)
                             
                     csv = convert_df(df)
 
                     st.download_button(
-                    "Press to Download",
+                    "Download",
                     csv,
                     f"{supplier_name}.csv",
                     "text/csv",
