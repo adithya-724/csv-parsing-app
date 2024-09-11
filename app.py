@@ -44,8 +44,7 @@ def create_csv(supp_name,cols,img_list):
     for img in img_list:
         model = genai.GenerativeModel('gemini-1.5-flash')
 
-        newsize = (500, 500)
-        im1 = img.resize(newsize)
+        
         response = model.generate_content([f'''
         You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictionary format.
@@ -87,14 +86,18 @@ if st.session_state['api_key'] != '':
         bytes_data = uploaded_file.getvalue()
         img_list = pdf_to_images(bytes_data)
         st.subheader('Verify Images')
+        final_img_list = []
+        newsize = (500, 500)
         for img in img_list:
-            st.write(img)
+            im1 = img.resize(newsize)
+            st.write(im1)
+            final_img_list.append(im1)
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
         final_cols = '[ ' + cols + ' ]'
         supplier_name = st.text_input('Enter supplier name')
         try:
             if supplier_name != '' and cols != '':
-                df = create_csv(supplier_name,final_cols,img_list)
+                df = create_csv(supplier_name,final_cols,final_img_list)
                         
                 csv = convert_df(df)
 
