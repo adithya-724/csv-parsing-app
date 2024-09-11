@@ -52,6 +52,7 @@ def create_csv(supp_name,cols,img_list):
         result_json = to_markdown(response.text)
         result_str = result_json.data
         st.write(result_str)
+        st.write(type(img),img.size)
 
         response = model.generate_content([f'''
         You will be given an image which conatains tabular data.
