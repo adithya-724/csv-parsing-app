@@ -51,7 +51,7 @@ def create_csv(supp_name,cols,img_list):
         The result should strictly only have the fully formatted dictionary.
         Each column should be a unique key and the column values should be the values of the key.
         Also only look for these columns : {cols} 
-        ''',im1])
+        ''',img])
         result_json = to_markdown(response.text)
         result_str = result_json.data
         print('fetched result')
