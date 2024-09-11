@@ -25,7 +25,7 @@ def pdf_to_images(bytes_data):
 if 'api_key' not in st.session_state:
     st.session_state['api_key'] = ''
 
-
+st.set_page_config(page_title="csv parser")
 
 st.session_state['api_key'] = st.text_input('Enter your gemini api key')
 genai.configure(api_key=st.session_state['api_key'])
