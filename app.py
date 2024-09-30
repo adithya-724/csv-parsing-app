@@ -11,6 +11,7 @@ import ast
 from IPython.display import display
 from IPython.display import Markdown
 import streamlit as st
+import json
 
 #helpers
 def to_markdown(text):
@@ -21,17 +22,26 @@ def pdf_to_images(bytes_data):
     images = convert_from_bytes(bytes_data)
     return images
 
-def escape_single_quotes(data):
-    if isinstance(data, dict):
-        return {key: escape_single_quotes(value) for key, value in data.items()}
-    elif isinstance(data, list):
-        return [escape_single_quotes(item) for item in data]
-    elif isinstance(data, str):
+def sanitize_dict_string(data):
+    if isinstance(data, str):
         # Escape single quotes
-        return data.replace("'", "\\'")
+        sanitized_str =  data.replace("'", "\\'")
+        sanitized_str1 = sanitized_str.replace('>', '').strip()
+        return sanitized_str1
     else:
         return data
 
+def parse_dict_string(dict_str):
+    """
+    Parse a sanitized dictionary string using JSON.
+    """
+    result_str_new = dict_str.replace("'", '"')
+    sanitized_str = sanitize_dict_string(result_str_new)
+    try:
+        return json.loads(sanitized_str)
+    except json.JSONDecodeError as e:
+        st.error("Error decoding JSON:", e)
+        return None
 
 
 
@@ -74,14 +84,12 @@ def create_csv(supp_name,cols,img_list):
 
         result_str_new = result_str[start_idx:end_idx+1]
         try:
-          result_dict = ast.literal_eval(result_str_new)
-          print(result_dict)
-          st.success('No parsing errors')
+          result_dict = parse_dict_string(result_str_new)
         except:
-          st.warning('parsing errors')
-          corrected_str = escape_single_quotes(result_str_new)
-          result_dict = ast.literal_eval(corrected_str)
+          print('parsing errors')
+          result_dict = parse_dict_string(result_str_new)
 
+          
         max_length = max(len(value) for value in result_dict.values())
 
         for key, value in result_dict.items():
