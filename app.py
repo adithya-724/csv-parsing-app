@@ -21,6 +21,19 @@ def pdf_to_images(bytes_data):
     images = convert_from_bytes(bytes_data)
     return images
 
+def escape_single_quotes(data):
+    if isinstance(data, dict):
+        return {key: escape_single_quotes(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [escape_single_quotes(item) for item in data]
+    elif isinstance(data, str):
+        # Escape single quotes
+        return data.replace("'", "\\'")
+    else:
+        return data
+
+
+
 
 if 'api_key' not in st.session_state:
     st.session_state['api_key'] = ''
@@ -60,8 +73,14 @@ def create_csv(supp_name,cols,img_list):
         end_idx = result_str.find('}')
 
         result_str_new = result_str[start_idx:end_idx+1]
-        result_dict = ast.literal_eval(result_str_new)
-        print(result_dict)
+        try:
+          result_dict = ast.literal_eval(result_str_new)
+          print(result_dict)
+          st.success('No parsing errors')
+        except:
+          st.warning('parsing errors')
+          corrected_str = escape_single_quotes(result_str_new)
+          result_dict = ast.literal_eval(corrected_str)
 
         max_length = max(len(value) for value in result_dict.values())
 
