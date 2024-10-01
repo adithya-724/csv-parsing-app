@@ -112,8 +112,9 @@ if st.session_state['api_key'] != '':
                             key='download-csv'
                             )
 
-                        except:
+                        except Exception as e:
                             st.error(f'Parsing failed.Please retry')
+                            st.error(e)
                                     
                 else:
                     st.error('Enter column headers and supp name to proceed')
