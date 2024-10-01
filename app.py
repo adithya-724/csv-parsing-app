@@ -131,7 +131,8 @@ if st.session_state['api_key'] != '':
                             )
 
                         except Exception as e:
-                            st.error(f'Parsing failed. Please retry. Error: {str(e)}')
+                            st.error(f'Parsing failed. Please retry')
+                            st.warning(e)
                                     
                 else:
                     st.error('Enter column headers and supp name to proceed')
