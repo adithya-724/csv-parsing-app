@@ -92,9 +92,6 @@ if st.session_state['api_key'] != '':
             st.write(im1)
             final_img_list.append(im1)
         
-        for img in final_img_list:
-            st.write(type(img))
-            st.write(img)
         st.subheader('Verify Images')
         
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
@@ -116,23 +113,8 @@ if st.session_state['api_key'] != '':
                             )
 
                         except:
-                            for i in range(5):
-                                try:
-                                    df = create_csv(supplier_name,cols,final_img_list)  
-                                    csv = convert_df(df)
-                                    st.success('Parsing successs')
-                                    st.download_button(
-                                    "Download",
-                                    csv,
-                                    f"{supplier_name}.csv",
-                                    "text/csv",
-                                    key='download-csv'
-                                    )
-                                except:
-                                    st.error(f'Parsing failed. Retrying {i}')
-                                    continue
-
-    
+                            st.error(f'Parsing failed.Please retry')
+                                    
                 else:
                     st.error('Enter column headers and supp name to proceed')
 
