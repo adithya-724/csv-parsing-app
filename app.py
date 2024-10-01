@@ -75,11 +75,11 @@ def create_csv(supp_name,cols,img_list):
 
 # App
 with st.expander('readme'):
-        st.markdown(" -This app is intended to quickly convert tabular data from pdfs or images to csv format")
-        st.markdown(" -In case of a pdf, each page will be treated as a separate image. Make sure to create the pdf accordingly.")
-        st.markdown("-If you get parsing errors, retry by clicking the button again. If it does not work, upload a clearer image.")
+        st.markdown("- This app is intended to quickly convert tabular data from pdfs or images to csv format")
+        st.markdown("- In case of a pdf, each page will be treated as a separate image. Make sure to create the pdf accordingly.")
+        st.markdown("- If you get parsing errors, retry by clicking the button again. If it does not work, upload a clearer image.")
         st.markdown("- Ensure to write column names as present in the pdf/image to get good results")
-        st.markdown("-Extracted data might not be entirely accurate. Always check your data after extraction.")
+        st.markdown("- Extracted data might not be entirely accurate. Always check your data after extraction.")
         
 st.divider()
 st.session_state['api_key'] = st.text_input('Enter your gemini api key')
