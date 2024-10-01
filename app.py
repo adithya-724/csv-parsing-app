@@ -27,8 +27,7 @@ st.markdown('''
 </style>
 ''', unsafe_allow_html=True)
 
-st.session_state['api_key'] = st.text_input('Enter your gemini api key')
-genai.configure(api_key=st.session_state['api_key'])
+
 
 
 
@@ -81,6 +80,10 @@ with st.expander('readme'):
         st.markdown("-If you get parsing errors, retry by clicking the button again. If it does not work, upload a clearer image.")
         st.markdown("-Extracted data might not be entirely accurate. Always check your data after extraction.")
         
+st.session_state['api_key'] = st.text_input('Enter your gemini api key')
+genai.configure(api_key=st.session_state['api_key'])
+
+st.info(f'You can create an api key here : {st.page_link('https://aistudio.google.com/app/apikey',label='API key',icon='🔑')}')
 
 if st.session_state['api_key'] != '':
     
@@ -108,8 +111,8 @@ if st.session_state['api_key'] != '':
         
         st.subheader('Verify Images')
         
-        cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
-        supplier_name = st.text_input('Enter supplier name')
+        cols = st.text_input('Enter column headers in csv format',placeholder='S.no,item name,gst rate,etc..')
+        supplier_name = st.text_input('Enter supplier/file name')
         try:
             btn = st.button('process')
             if btn:
