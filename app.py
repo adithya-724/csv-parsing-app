@@ -19,6 +19,13 @@ if 'api_key' not in st.session_state:
     st.session_state['api_key'] = ''
 
 st.set_page_config(page_title="csv parser")
+st.markdown('''
+<style>
+[data-testid="stMarkdownContainer"] ul{
+    list-style-position: inside;
+}
+</style>
+''', unsafe_allow_html=True)
 
 st.session_state['api_key'] = st.text_input('Enter your gemini api key')
 genai.configure(api_key=st.session_state['api_key'])
@@ -68,17 +75,15 @@ def create_csv(supp_name,cols,img_list):
     return combined_df
 
 # App
-if st.session_state['api_key'] != '':
-    with st.expander('About app'):
-        st.markdown(
-            '''
-            -This app is intended to quickly convert tabular data from pdfs or images to csv format
-            -In case of a pdf, each page will be treated as a separate image. Make sure to create the pdf accordingly.
-            -If you get parsing errors, retry by clicking the button again. If it doesn't work, upload a clearer image.
-            -Extracted data might not be entirely accurate. Always check your data after extraction.
-            '''
-        )
+with st.expander('readme'):
+        st.markdown(" -This app is intended to quickly convert tabular data from pdfs or images to csv format")
+        st.markdown(" -In case of a pdf, each page will be treated as a separate image. Make sure to create the pdf accordingly.")
+        st.markdown("-If you get parsing errors, retry by clicking the button again. If it does not work, upload a clearer image.")
+        st.markdown("-Extracted data might not be entirely accurate. Always check your data after extraction.")
+        
 
+if st.session_state['api_key'] != '':
+    
     uploaded_file = st.file_uploader('Choose your .pdf file or image file', type=["pdf","png","jpg"])
     if uploaded_file is not None:
         ext = Path(uploaded_file.name).suffix
