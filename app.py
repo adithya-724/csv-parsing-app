@@ -92,7 +92,6 @@ if st.session_state['api_key'] != '':
     uploaded_file = st.file_uploader('Choose your .pdf file or image file', type=["pdf","png","jpg"])
     if uploaded_file is not None:
         ext = Path(uploaded_file.name).suffix
-
         bytes_data = uploaded_file.getvalue()
         image_io = io.BytesIO(bytes_data)
         final_img_list = []
@@ -132,8 +131,7 @@ if st.session_state['api_key'] != '':
                             )
 
                         except Exception as e:
-                            st.error(f'Parsing failed.Please retry')
-                            st.error(e)
+                            st.error(f'Parsing failed. Please retry. Error: {str(e)}')
                                     
                 else:
                     st.error('Enter column headers and supp name to proceed')
