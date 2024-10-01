@@ -78,20 +78,24 @@ if st.session_state['api_key'] != '':
 
         bytes_data = uploaded_file.getvalue()
         image_io = io.BytesIO(bytes_data)
-        if ext == '.pdf':
-            img_list = pdf_to_images(bytes_data)
-        if ext in ('.png','.jpg'):
-            img_list = Image.open(image_io)
-            st.write(img_list)
-        
-        st.subheader('Verify Images')
         final_img_list = []
         newsize = (1000, 1000)
-        for img in img_list:
-            im1 = img.resize(newsize)
-            st.write(im1)
-            final_img_list.append(im1)
 
+
+        if ext == '.pdf':
+            img_list = pdf_to_images(bytes_data)
+            for img in img_list:
+                im1 = img.resize(newsize)
+                st.write(im1)
+                final_img_list.append(im1)
+        if ext in ('.png','.jpg'):
+            img = Image.open(image_io)
+            im1 = img.resize(newsize)
+            st.write(img_list)
+            final_img_list.append(im1)
+            
+        st.subheader('Verify Images')
+        
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
         supplier_name = st.text_input('Enter supplier name')
         df = ''
