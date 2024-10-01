@@ -96,31 +96,39 @@ if st.session_state['api_key'] != '':
         
         cols = st.text_input('Enter column header in csv',placeholder='S.no,item name,gst rate,etc..')
         supplier_name = st.text_input('Enter supplier name')
-        df = ''
-        counter = 0
         try:
             btn = st.button('process')
             if btn:
                 if supplier_name != '' and cols != '':             
-                    with st.spinner('Processing'):
-                        while True:
-                            if counter == 5:
-                                st.error('Failed extracting. Check image or pdf')
-                                break
-                            try:
-                                df = create_csv(supplier_name,cols,final_img_list)  
-                                csv = convert_df(df)
-                                st.download_button(
-                                "Download",
-                                csv,
-                                f"{supplier_name}.csv",
-                                "text/csv",
-                                key='download-csv'
-                                )
-                                break  
-                            except:
-                                counter += 1
-                                continue                            
+                    with st.spinner('Processing'):  
+                        try:
+                            df = create_csv(supplier_name,cols,final_img_list)  
+                            csv = convert_df(df)
+                            st.download_button(
+                            "Download",
+                            csv,
+                            f"{supplier_name}.csv",
+                            "text/csv",
+                            key='download-csv'
+                            )
+
+                        except:
+                            for _ in range(5):
+                                try:
+                                    df = create_csv(supplier_name,cols,final_img_list)  
+                                    csv = convert_df(df)
+                                    st.download_button(
+                                    "Download",
+                                    csv,
+                                    f"{supplier_name}.csv",
+                                    "text/csv",
+                                    key='download-csv'
+                                    )
+                                    break
+                                except:
+                                    continue
+
+    
                 else:
                     st.error('Enter column headers and supp name to proceed')
 
