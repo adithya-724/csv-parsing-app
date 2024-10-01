@@ -80,11 +80,11 @@ with st.expander('readme'):
         st.markdown("-If you get parsing errors, retry by clicking the button again. If it does not work, upload a clearer image.")
         st.markdown("-Extracted data might not be entirely accurate. Always check your data after extraction.")
         
+st.divider()
 st.session_state['api_key'] = st.text_input('Enter your gemini api key')
 genai.configure(api_key=st.session_state['api_key'])
 
-st.info(f'You can create an api key here')
-st.page_link('https://aistudio.google.com/app/apikey',label='API key',icon='🔑')
+
 
 if st.session_state['api_key'] != '':
     
@@ -142,3 +142,6 @@ if st.session_state['api_key'] != '':
       
 else:
     st.error('Please enter api key')
+    cola,colb = st.columns(2)
+    cola.info(f'You can create an api key here : ')
+    colb.page_link('https://aistudio.google.com/app/apikey',label='API key',icon='🔑')
