@@ -115,8 +115,10 @@ if st.session_state['api_key'] != '':
                         except:
                             for _ in range(5):
                                 try:
+                                   
                                     df = create_csv(supplier_name,cols,final_img_list)  
                                     csv = convert_df(df)
+                                    st.success('Parsing successs')
                                     st.download_button(
                                     "Download",
                                     csv,
@@ -124,8 +126,8 @@ if st.session_state['api_key'] != '':
                                     "text/csv",
                                     key='download-csv'
                                     )
-                                    break
                                 except:
+                                    st.error('Parsing failed. Retrying...')
                                     continue
 
     
