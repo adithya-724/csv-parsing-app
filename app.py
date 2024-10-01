@@ -37,7 +37,6 @@ def create_csv(supp_name,cols,img_list):
         Also only look for these columns : {cols} 
         Make sure that the dictionary you return is purely in a python dictionary format without any formatting issues.
         ''',img])
-        st.write(response)
 
         result_json = to_markdown(response.text)
         result_str = result_json.data
@@ -68,8 +67,18 @@ def create_csv(supp_name,cols,img_list):
     combined_df = pd.concat(df_ls, ignore_index=True)
     return combined_df
 
-
+# App
 if st.session_state['api_key'] != '':
+    with st.expander('About app'):
+        st.markdown(
+            '''
+            -This app is intended to quickly convert tabular data from pdfs or images to csv format
+            -In case of a pdf, each page will be treated as a separate image. Make sure to create the pdf accordingly.
+            -If you get parsing errors, retry by clicking the button again. If it doesn't work, upload a clearer image.
+            -Extracted data might not be entirely accurate. Always check your data after extraction.
+            '''
+        )
+
     uploaded_file = st.file_uploader('Choose your .pdf file or image file', type=["pdf","png","jpg"])
     if uploaded_file is not None:
         ext = Path(uploaded_file.name).suffix
