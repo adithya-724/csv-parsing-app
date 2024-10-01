@@ -112,10 +112,12 @@ if st.session_state['api_key'] != '':
         
         
         st.divider()
-        cols = st.text_input('Enter column headers in csv format',placeholder='S.no,item name,gst rate,etc..')
-        supplier_name = st.text_input('Enter supplier/file name')
+
+        with st.form('form'):
+            cols = st.text_input('Enter column headers in csv format',placeholder='S.no,item name,gst rate,etc..')
+            supplier_name = st.text_input('Enter supplier/file name')
+            btn = st.form_submit_button('process')
         try:
-            btn = st.button('process')
             if btn:
                 if supplier_name != '' and cols != '':             
                     with st.spinner('Processing'):  
