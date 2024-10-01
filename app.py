@@ -70,10 +70,8 @@ def create_csv(supp_name,cols,img_list):
 
 
 if st.session_state['api_key'] != '':
-    uploaded_file = st.file_uploader('Choose your .pdf file', type=["pdf","png","jpg"])
+    uploaded_file = st.file_uploader('Choose your .pdf file or image file', type=["pdf","png","jpg"])
     if uploaded_file is not None:
-        st.write("File extension:")
-        st.write(Path(uploaded_file.name).suffix)
         ext = Path(uploaded_file.name).suffix
 
         bytes_data = uploaded_file.getvalue()
@@ -91,7 +89,7 @@ if st.session_state['api_key'] != '':
         if ext in ('.png','.jpg'):
             img = Image.open(image_io)
             im1 = img.resize(newsize)
-            st.write(img_list)
+            st.write(im1)
             final_img_list.append(im1)
             
         st.subheader('Verify Images')
