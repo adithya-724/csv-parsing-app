@@ -28,9 +28,7 @@ genai.configure(api_key=st.session_state['api_key'])
 def create_csv(supp_name,cols,img_list):
     df_ls = []
     for img in img_list:
-        model = genai.GenerativeModel('gemini-1.5-flash')
-
-        
+        model = genai.GenerativeModel('gemini-1.5-flash')        
         response = model.generate_content([f'''
         You will be given an image which conatains tabular data.
         Extract this information and format it in a python dictionary format.
@@ -39,6 +37,8 @@ def create_csv(supp_name,cols,img_list):
         Also only look for these columns : {cols} 
         Make sure that the dictionary you return is purely in a python dictionary format without any formatting issues.
         ''',img])
+        st.write(response)
+
         result_json = to_markdown(response.text)
         result_str = result_json.data
         print('fetched result')
