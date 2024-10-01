@@ -82,6 +82,7 @@ if st.session_state['api_key'] != '':
             img_list = pdf_to_images(bytes_data)
         if ext in ('.png','.jpg'):
             img_list = Image.open(image_io)
+            img_list.show()
         
         st.subheader('Verify Images')
         final_img_list = []
